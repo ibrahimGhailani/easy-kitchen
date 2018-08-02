@@ -6,4 +6,5 @@
     <string name="item4">Sandwich</string>
     <string name="item5">Rice</string>
     <string name="item6">Pizza</string>
+    <string name="search_kitchen">Search kitchen</string>
 </resources>

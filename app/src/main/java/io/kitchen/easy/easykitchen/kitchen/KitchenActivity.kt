@@ -7,19 +7,25 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.appyvet.materialrangebar.RangeBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.FirebaseApp
 import io.kitchen.easy.easykitchen.R
+import kotlinx.android.synthetic.main.activity_kitchen.*
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.item_kitchen.view.*
-import kotlinx.android.synthetic.main.main_content.*
 
 class KitchenActivity : AppCompatActivity() {
 
+    var maxR = 0
+    var minR = 0
+    var searchText = ""
     private val viewModel: KitchenViewModel by lazy {
         ViewModelProviders.of(this)[KitchenViewModel::class.java]
     }
@@ -46,6 +52,29 @@ class KitchenActivity : AppCompatActivity() {
         item4.setup(getString(R.string.item6),R.drawable.item6)
         item5.setup(getString(R.string.item5),R.drawable.item5)
         item6.setup(getString(R.string.item4),R.drawable.item4)
+
+        range.setOnRangeBarChangeListener(object: RangeBar.OnRangeBarChangeListener{
+            override fun onRangeChangeListener(rangeBar: RangeBar?, leftPinIndex: Int, rightPinIndex: Int, leftPinValue: String?, rightPinValue: String?) {
+                maxR = rightPinValue!!.toInt()
+                minR = leftPinValue!!.toInt()
+                viewModel.filter(searchText,minR,maxR)
+            }
+        })
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchText = query!!
+                viewModel.filter(searchText,minR,maxR)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText.isNullOrEmpty()){
+                    searchText = ""
+                    viewModel.filter(searchText,minR,maxR)
+                }
+                return false
+            }
+        })
     }
 
     private fun initializeObservers() {

@@ -5,8 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/main_content" />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:background="@color/colorPrimary">
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:layout_gravity="center"
+                app:queryHint="@string/search_kitchen"
+                app:defaultQueryHint="@string/search_kitchen"
+                android:background="#ffffff"></android.support.v7.widget.SearchView>
+        </FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"/>
+    </LinearLayout>
     <include layout="@layout/bottom_sheet" />
 
 </android.support.design.widget.CoordinatorLayout>
