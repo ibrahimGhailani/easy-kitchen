@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Easy Kitchen</string>
+    <string name="item1">Chicken</string>
+    <string name="item2">Fish</string>
+    <string name="item3">Beef</string>
+    <string name="item4">Sandwich</string>
+    <string name="item5">Rice</string>
+    <string name="item6">Pizza</string>
 </resources>
