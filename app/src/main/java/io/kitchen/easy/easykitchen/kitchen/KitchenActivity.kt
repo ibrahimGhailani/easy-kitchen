@@ -95,6 +95,7 @@ class KitchenAdapter(
     }
 
     fun insertKitchens(kitchens: List<Kitchen>) {
+        this.kitchens.clear()
         this.kitchens.addAll(kitchens)
         notifyDataSetChanged()
     }
