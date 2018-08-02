@@ -16,6 +16,7 @@ class RateView(context: Context?, attrs: AttributeSet?) : LinearLayout(context, 
     }
 
     fun setRate(rate:Float){
+        removeAllViews()
         val integer = rate.toInt()
         val remainder = rate - integer
 
