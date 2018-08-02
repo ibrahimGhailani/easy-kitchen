@@ -77,8 +77,7 @@ class KitchenAdapter(
         val kitchen = kitchens[position]
         holder.nameTextView.text = kitchen.name
         holder.location.text = "(${kitchen.location.latitude}, ${kitchen.location.longitude})"
-        holder.minCapacity.text = "Min Capacity: ${kitchen.minCapacity}"
-        holder.maxCapacity.text = "Max Capacity: ${kitchen.maxCapacity}"
+        holder.capacity.text = "${kitchen.minCapacity} - ${kitchen.maxCapacity} orders"
         holder.rootView.setOnClickListener {
             doOnKitchenClicked.invoke()
         }
@@ -90,8 +89,7 @@ class KitchenAdapter(
         val rootView = itemView.rootView
         val nameTextView = itemView.nameTextView
         val location = itemView.locationTextView
-        val minCapacity = itemView.minCapacity
-        val maxCapacity = itemView.maxCapacity
+        val capacity = itemView.capacityTextView
         val logo = itemView.imageView
 
     }
