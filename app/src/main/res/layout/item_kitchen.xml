@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp">
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="15dp"
         android:paddingBottom="15dp"
+        android:paddingEnd="20dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp">
+        android:paddingTop="15dp">
 
         <ImageView
             android:id="@+id/imageView"
@@ -34,20 +34,22 @@
                 android:id="@+id/nameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginBottom="10dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="AL BAIK" />
+
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="3">
+
                 <io.kitchen.easy.easykitchen.kitchen.TagView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
                     android:layout_marginTop="3dp"
-                    android:text="hello1"/>
+                    android:text="hello1" />
 
                 <io.kitchen.easy.easykitchen.kitchen.TagView
                     android:layout_width="wrap_content"
@@ -70,23 +72,27 @@
                     android:layout_marginTop="3dp"
                     android:text="hello4" />
             </GridLayout>
+
             <TextView
+                android:id="@+id/capacityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
-                android:text="100 - 1000 ORDERS"/>
+                android:layout_marginTop="10dp"
+                tools:text="100 - 1000 ORDERS" />
+
             <io.kitchen.easy.easykitchen.kitchen.RateView
+                android:id="@+id/rate"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:id="@+id/rate"></io.kitchen.easy.easykitchen.kitchen.RateView>
+                android:layout_marginTop="10dp" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_location_on_black_24dp"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:src="@drawable/ic_location_on_black_24dp" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

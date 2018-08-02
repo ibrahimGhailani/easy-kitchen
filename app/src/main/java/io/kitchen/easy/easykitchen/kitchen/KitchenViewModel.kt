@@ -54,7 +54,7 @@ class KitchenViewModel : ViewModel() {
                 when {
                     name.isNotEmpty() && minCapacity != maxCapacity -> {
                         allKitchens.filter {
-                            it.name == name && if (maxCapacity != 0) {
+                            it.name.contains(name, true) && if (maxCapacity != 0) {
                                 it.maxCapacity <= maxCapacity && it.minCapacity >= minCapacity
 
                             } else {
@@ -63,7 +63,7 @@ class KitchenViewModel : ViewModel() {
                         }
                     }
                     name.isNotEmpty() -> allKitchens.filter {
-                        it.name == name
+                        it.name.contains(name, true)
                     }
                     minCapacity != maxCapacity -> allKitchens.filter {
                         if (maxCapacity != 0) {

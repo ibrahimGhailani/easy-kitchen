@@ -24,8 +24,7 @@ import kotlinx.android.synthetic.main.item_kitchen.view.*
 
 class KitchenActivity : AppCompatActivity() {
 
-    var maxR = 0
-    var minR = 0
+
     var searchText = ""
     private val viewModel: KitchenViewModel by lazy {
         ViewModelProviders.of(this)[KitchenViewModel::class.java]
@@ -35,6 +34,8 @@ class KitchenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kitchen)
         FirebaseApp.initializeApp(this)
+        var maxR = 0
+        var minR = 0
 
         initializeObservers()
 
@@ -118,6 +119,7 @@ class KitchenAdapter(
         val kitchen = kitchens[position]
         holder.nameTextView.text = kitchen.name
         holder.rate.setRate(5f)
+        holder.capacity.text ="${kitchen.minCapacity} - ${kitchen.maxCapacity} Orders"
         holder.rootView.setOnClickListener {
             doOnKitchenClicked.invoke(kitchen.id)
         }
@@ -128,6 +130,7 @@ class KitchenAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val rootView = itemView.rootView
         val nameTextView = itemView.nameTextView
+        val capacity = itemView.capacityTextView
         val rate = itemView.rate
         val logo = itemView.imageView
 
