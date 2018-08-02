@@ -21,6 +21,7 @@ class KitchenViewModel : ViewModel() {
         val kitchens = mutableListOf<Kitchen>()
         ref.get().addOnSuccessListener {
             it.forEach {
+                val id = it.id
                 val name = it.getString(FIELD_NAME) ?: ""
                 val max = it.getLong(FIELD_MAX_CAPACITY) ?: 0
                 val min = it.getLong(FIELD_MIN_CAPACITY) ?: 0
@@ -29,6 +30,7 @@ class KitchenViewModel : ViewModel() {
 
                 Log.d(TAG, "$name $max $min $logo")
                 kitchens.add(Kitchen(
+                        id = id,
                         name = name,
                         maxCapacity = max,
                         minCapacity = min,

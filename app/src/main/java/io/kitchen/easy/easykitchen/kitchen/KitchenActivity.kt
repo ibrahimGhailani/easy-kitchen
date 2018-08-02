@@ -3,6 +3,7 @@ package io.kitchen.easy.easykitchen.kitchen
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.FirebaseApp
 import io.kitchen.easy.easykitchen.R
+import io.kitchen.easy.easykitchen.detail.KitchenDetailActivity
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.item_kitchen.view.*
 import kotlinx.android.synthetic.main.main_content.*
@@ -35,17 +37,18 @@ class KitchenActivity : AppCompatActivity() {
 
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = KitchenAdapter(this, mutableListOf()) {
-
-            TODO("Start Activity details")
+        recyclerView.adapter = KitchenAdapter(this, mutableListOf()) { id ->
+            val intent = Intent(this, KitchenDetailActivity::class.java)
+            intent.putExtra("id", id)
+            startActivity(intent)
         }
 
-        item1.setup(getString(R.string.item3),R.drawable.item3)
-        item2.setup(getString(R.string.item2),R.drawable.item2)
-        item3.setup(getString(R.string.item1),R.drawable.item1)
-        item4.setup(getString(R.string.item6),R.drawable.item6)
-        item5.setup(getString(R.string.item5),R.drawable.item5)
-        item6.setup(getString(R.string.item4),R.drawable.item4)
+        item1.setup(getString(R.string.item3), R.drawable.item3)
+        item2.setup(getString(R.string.item2), R.drawable.item2)
+        item3.setup(getString(R.string.item1), R.drawable.item1)
+        item4.setup(getString(R.string.item6), R.drawable.item6)
+        item5.setup(getString(R.string.item5), R.drawable.item5)
+        item6.setup(getString(R.string.item4), R.drawable.item4)
     }
 
     private fun initializeObservers() {
@@ -63,6 +66,7 @@ data class Location(
 )
 
 data class Kitchen(
+        val id: String,
         val name: String,
         val location: Location,
         val minCapacity: Long,
@@ -73,7 +77,7 @@ data class Kitchen(
 class KitchenAdapter(
         private val context: Context,
         private val kitchens: MutableList<Kitchen>,
-        private val doOnKitchenClicked: () -> Unit
+        private val doOnKitchenClicked: (id: String) -> Unit
 ) : RecyclerView.Adapter<KitchenAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_kitchen, parent, false)
@@ -87,7 +91,7 @@ class KitchenAdapter(
         holder.nameTextView.text = kitchen.name
         holder.rate.setRate(5f)
         holder.rootView.setOnClickListener {
-            doOnKitchenClicked.invoke()
+            doOnKitchenClicked.invoke(kitchen.id)
         }
 
         Glide.with(context).load(kitchen.logo).apply(RequestOptions().circleCrop()).into(holder.logo)
