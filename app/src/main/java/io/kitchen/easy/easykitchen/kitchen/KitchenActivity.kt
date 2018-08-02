@@ -85,9 +85,6 @@ class KitchenAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val kitchen = kitchens[position]
         holder.nameTextView.text = kitchen.name
-//        holder.location.text = "(${kitchen.location.latitude}, ${kitchen.location.longitude})"
-//        holder.minCapacity.text = "Min Capacity: ${kitchen.minCapacity}"
-//        holder.maxCapacity.text = "Max Capacity: ${kitchen.maxCapacity}"
         holder.rate.setRate(5f)
         holder.rootView.setOnClickListener {
             doOnKitchenClicked.invoke()
@@ -100,14 +97,12 @@ class KitchenAdapter(
         val rootView = itemView.rootView
         val nameTextView = itemView.nameTextView
         val rate = itemView.rate
-//        val location = itemView.locationTextView
-//        val minCapacity = itemView.minCapacity
-//        val maxCapacity = itemView.maxCapacity
         val logo = itemView.imageView
 
     }
 
     fun insertKitchens(kitchens: List<Kitchen>) {
+        this.kitchens.clear()
         this.kitchens.addAll(kitchens)
         notifyDataSetChanged()
     }

@@ -2,14 +2,13 @@ package io.kitchen.easy.easykitchen.kitchen
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.Context
 import android.util.Log
-import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class KitchenViewModel : ViewModel() {
-
+    val kitchens = MutableLiveData<List<Kitchen>>()
+    private val allKitchens = mutableListOf<Kitchen>()
     private val db: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
     }
@@ -37,13 +36,46 @@ class KitchenViewModel : ViewModel() {
                         logo = logo
                 ))
             }
+            allKitchens.addAll(kitchens)
             this.kitchens.postValue(kitchens)
 
         }
+    }
+
+
+    fun filter(
+            name: String = "",
+            minCapacity: Int = 0,
+            maxCapacity: Int = 0
+    ) {
+        this.kitchens.value =
+                when {
+                    name.isNotEmpty() && minCapacity != maxCapacity -> {
+                        allKitchens.filter {
+                            it.name == name && if (maxCapacity != 0) {
+                                it.maxCapacity <= maxCapacity && it.minCapacity >= minCapacity
+
+                            } else {
+                                it.minCapacity >= minCapacity
+                            }
+                        }
+                    }
+                    name.isNotEmpty() -> allKitchens.filter {
+                        it.name == name
+                    }
+                    minCapacity != maxCapacity -> allKitchens.filter {
+                        if (maxCapacity != 0) {
+                            it.maxCapacity <= maxCapacity && it.minCapacity >= minCapacity
+
+                        } else {
+                            it.minCapacity >= minCapacity
+                        }
+                    }
+                    else -> allKitchens
+                }
 
     }
 
-    val kitchens = MutableLiveData<List<Kitchen>>()
 
     companion object {
         const val TAG = "KitchenViewModel"
