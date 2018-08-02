@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.google.firebase.FirebaseApp
 import io.kitchen.easy.easykitchen.R
 import kotlinx.android.synthetic.main.activity_kitchen.*
 import kotlinx.android.synthetic.main.item_kitchen.view.*
@@ -24,6 +25,8 @@ class KitchenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kitchen)
+        FirebaseApp.initializeApp(this)
+
         initializeObservers()
 
         viewModel.getKitchens()
@@ -53,8 +56,8 @@ data class Location(
 data class Kitchen(
         val name: String,
         val location: Location,
-        val minCapacity: Int,
-        val maxCapacity: Int,
+        val minCapacity: Long,
+        val maxCapacity: Long,
         val logo: String
 )
 
@@ -74,8 +77,8 @@ class KitchenAdapter(
         val kitchen = kitchens[position]
         holder.nameTextView.text = kitchen.name
         holder.location.text = "(${kitchen.location.latitude}, ${kitchen.location.longitude})"
-        holder.minCapacity.text = kitchen.minCapacity.toString()
-        holder.maxCapacity.text = kitchen.maxCapacity.toString()
+        holder.minCapacity.text = "Min Capacity: ${kitchen.minCapacity}"
+        holder.maxCapacity.text = "Max Capacity: ${kitchen.maxCapacity}"
         holder.rootView.setOnClickListener {
             doOnKitchenClicked.invoke()
         }
