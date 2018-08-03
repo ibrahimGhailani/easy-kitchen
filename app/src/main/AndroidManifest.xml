@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".detail.KitchenDetailActivity" />
-        <activity android:name=".kitchen.Order.OrderFormActivity"></activity>
+        <activity android:name="io.kitchen.easy.easykitchen.order.OrderFormActivity"></activity>
     </application>
 
 </manifest>

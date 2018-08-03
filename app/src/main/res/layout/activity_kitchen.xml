@@ -50,6 +50,17 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/ordersFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/file"
+        android:tint="#fff"
+        android:visibility="invisible"
+        app:layout_anchor="@id/bottom_sheet"
+        app:layout_anchorGravity="end" />
+
     <include layout="@layout/bottom_sheet" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.FirebaseApp
 import io.kitchen.easy.easykitchen.R
 import io.kitchen.easy.easykitchen.detail.KitchenDetailActivity
+import io.kitchen.easy.easykitchen.order.getOrders
+import io.kitchen.easy.easykitchen.order.hasPreviousOrders
 import kotlinx.android.synthetic.main.activity_kitchen.*
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.item_kitchen.view.*
@@ -78,6 +81,15 @@ class KitchenActivity : AppCompatActivity() {
                 return false
             }
         })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (hasPreviousOrders(this)) ordersFab.visibility = View.VISIBLE
+
+
+        Log.d("Kitchen", getOrders(this).toString())
     }
 
     private fun initializeObservers() {
@@ -91,6 +103,7 @@ class KitchenActivity : AppCompatActivity() {
                 (recyclerView.adapter as KitchenAdapter).insertKitchens(it)
             }
         })
+
     }
 }
 
