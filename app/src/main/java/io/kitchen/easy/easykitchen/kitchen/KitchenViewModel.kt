@@ -2,18 +2,18 @@ package io.kitchen.easy.easykitchen.kitchen
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import io.kitchen.easy.easykitchen.detail.KitchenDetailViewModel.Companion.FIELD_NAME
 
 class KitchenViewModel : ViewModel() {
     val kitchens = MutableLiveData<List<Kitchen>>()
     private val allKitchens = mutableListOf<Kitchen>()
     val loading = MutableLiveData<Boolean>()
-    val selectedCategory = mutableListOf<String>()
+    private val selectedCategory = mutableListOf<String>()
+    private var minCapacity = 0
+    private var maxCapacity = 0
+    private var searchText: String = ""
     private val db: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
     }
@@ -54,49 +54,40 @@ class KitchenViewModel : ViewModel() {
     }
 
     fun filter(
-            name: String = "",
-            minCapacity: Int = 0,
-            maxCapacity: Int = 0,
-            categories: List<String> = listOf()
+            name: String = searchText,
+            minCapacity: Int = this.minCapacity,
+            maxCapacity: Int = this.maxCapacity
     ) {
-        this.kitchens.value =
-                when {
-                    name.isNotEmpty() && minCapacity != maxCapacity && categories.isNotEmpty() -> {
-                        allKitchens.filter {
-                            it.name.contains(name, true) && if (maxCapacity != 0) {
-                                it.maxCapacity <= maxCapacity && it.minCapacity >= minCapacity
+        searchText = name
+        this.minCapacity = minCapacity
+        if (maxCapacity != 0) this.maxCapacity = maxCapacity
 
-                            } else {
-                                it.minCapacity >= minCapacity
-                            }
+        this.kitchens.value = allKitchens.filter {
+            var filter = true
+            if (name.isNotEmpty()) {
+                filter = it.name.contains(searchText, true)
+            }
+            if (minCapacity != 0) {
+                this.minCapacity = maxCapacity
+                filter = filter && it.minCapacity >= this.minCapacity
 
-                            it.category.containsAll(categories)
-                        }
-                    }
-                    name.isNotEmpty() -> allKitchens.filter {
-                        it.name.contains(name, true)
-                    }
-                    minCapacity != maxCapacity -> allKitchens.filter {
-                        if (maxCapacity != 0) {
-                            it.maxCapacity <= maxCapacity && it.minCapacity >= minCapacity
+            }
+            if (maxCapacity != 0) {
+                this.maxCapacity = maxCapacity
+                filter = filter && it.maxCapacity <= this.maxCapacity
+            }
 
-                        } else {
-                            it.minCapacity >= minCapacity
-                        }
-                    }
-                    categories.isNotEmpty() -> {
-                        allKitchens.filter {
-                            it.category.containsAll(categories)
-                        }
-                    }
-                    else -> allKitchens
-                }
+            if (selectedCategory.isNotEmpty()) {
+                filter = filter && it.category.containsAll(selectedCategory)
+            }
+            filter
+        }
     }
 
     fun filterCategory(selected: Boolean, title: String) {
         if (selected) selectedCategory.add(title)
         else selectedCategory.remove(title)
-        filter(categories = selectedCategory)
+        filter(searchText, minCapacity, maxCapacity)
     }
 
 
