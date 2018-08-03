@@ -8,6 +8,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class KitchenDetailViewModel : ViewModel() {
 
     val meals = MutableLiveData<List<Meal>>()
+    val loading = MutableLiveData<Boolean>()
+
     private val db: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
     }
@@ -17,7 +19,7 @@ class KitchenDetailViewModel : ViewModel() {
 
     fun getMeals(id: String) {
         val meals = mutableListOf<Meal>()
-
+        loading.postValue(true)
         ref.whereEqualTo(FIELD_KITCHEN, id).get()
                 .addOnSuccessListener {
                     it.forEach {
@@ -30,6 +32,7 @@ class KitchenDetailViewModel : ViewModel() {
                     }
 
                     this.meals.postValue(meals)
+                    loading.postValue(false)
                 }
 
     }

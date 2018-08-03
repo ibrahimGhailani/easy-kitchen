@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class KitchenViewModel : ViewModel() {
     val kitchens = MutableLiveData<List<Kitchen>>()
     private val allKitchens = mutableListOf<Kitchen>()
+    val loading = MutableLiveData<Boolean>()
     private val db: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
     }
@@ -19,6 +20,7 @@ class KitchenViewModel : ViewModel() {
 
     fun getKitchens() {
         val kitchens = mutableListOf<Kitchen>()
+        loading.postValue(true)
         ref.get().addOnSuccessListener {
             it.forEach {
                 val id = it.id
@@ -40,6 +42,7 @@ class KitchenViewModel : ViewModel() {
             }
             allKitchens.addAll(kitchens)
             this.kitchens.postValue(kitchens)
+            loading.postValue(false)
 
         }
     }

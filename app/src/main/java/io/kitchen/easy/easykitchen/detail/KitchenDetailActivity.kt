@@ -40,9 +40,17 @@ class KitchenDetailActivity : AppCompatActivity() {
     }
 
     private fun initializeObservers() {
+        viewModel.loading.observe(this, Observer {
+            it?.let {
+                progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+                if (it) emptyView.visibility = View.INVISIBLE
+            }
+        })
+
         viewModel.meals.observe(this, Observer {
             it?.let {
                 (recyclerView.adapter as MealAdapter).insertMeals(it)
+                emptyView.visibility = if (it.isEmpty()) View.VISIBLE else View.INVISIBLE
             }
         })
     }

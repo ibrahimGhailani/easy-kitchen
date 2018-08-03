@@ -81,6 +81,11 @@ class KitchenActivity : AppCompatActivity() {
     }
 
     private fun initializeObservers() {
+        viewModel.loading.observe(this, Observer {
+            it?.let {
+                progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            }
+        })
         viewModel.kitchens.observe(this, Observer {
             it?.let {
                 (recyclerView.adapter as KitchenAdapter).insertKitchens(it)
@@ -119,7 +124,7 @@ class KitchenAdapter(
         val kitchen = kitchens[position]
         holder.nameTextView.text = kitchen.name
         holder.rate.setRate(5f)
-        holder.capacity.text ="${kitchen.minCapacity} - ${kitchen.maxCapacity} Orders"
+        holder.capacity.text = "${kitchen.minCapacity} - ${kitchen.maxCapacity} Orders"
         holder.rootView.setOnClickListener {
             doOnKitchenClicked.invoke(kitchen.id)
         }
