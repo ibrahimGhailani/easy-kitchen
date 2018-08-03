@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.appyvet.materialrangebar.RangeBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.FirebaseApp
@@ -52,20 +51,35 @@ class KitchenActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        item1.setup(getString(R.string.item3), R.drawable.item3)
-        item2.setup(getString(R.string.item2), R.drawable.item2)
-        item3.setup(getString(R.string.item1), R.drawable.item1)
-        item4.setup(getString(R.string.item6), R.drawable.item6)
-        item5.setup(getString(R.string.item5), R.drawable.item5)
-        item6.setup(getString(R.string.item4), R.drawable.item4)
+        item1.setup(getString(R.string.item3), R.drawable.item3) { selected, title ->
+            viewModel.filterCategory(selected, title)
+        }
+        item2.setup(getString(R.string.item2), R.drawable.item2) { selected, title ->
+            viewModel.filterCategory(selected, title)
 
-        range.setOnRangeBarChangeListener(object : RangeBar.OnRangeBarChangeListener {
-            override fun onRangeChangeListener(rangeBar: RangeBar?, leftPinIndex: Int, rightPinIndex: Int, leftPinValue: String?, rightPinValue: String?) {
-                maxR = rightPinValue!!.toInt()
-                minR = leftPinValue!!.toInt()
-                viewModel.filter(searchText, minR, maxR)
-            }
-        })
+        }
+        item3.setup(getString(R.string.item1), R.drawable.item1) { selected, title ->
+            viewModel.filterCategory(selected, title)
+
+        }
+        item4.setup(getString(R.string.item6), R.drawable.item6) { selected, title ->
+            viewModel.filterCategory(selected, title)
+
+        }
+        item5.setup(getString(R.string.item5), R.drawable.item5) { selected, title ->
+            viewModel.filterCategory(selected, title)
+
+        }
+        item6.setup(getString(R.string.item4), R.drawable.item4) { selected, title ->
+            viewModel.filterCategory(selected, title)
+
+        }
+
+        range.setOnRangeBarChangeListener { _, _, _, leftPinValue, rightPinValue ->
+            maxR = rightPinValue!!.toInt()
+            minR = leftPinValue!!.toInt()
+            viewModel.filter(searchText, minR, maxR)
+        }
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchText = query!!
@@ -118,7 +132,8 @@ data class Kitchen(
         val location: Location,
         val minCapacity: Long,
         val maxCapacity: Long,
-        val logo: String
+        val logo: String,
+        val category: List<String> = listOf()
 )
 
 class KitchenAdapter(
@@ -141,6 +156,12 @@ class KitchenAdapter(
         holder.rootView.setOnClickListener {
             doOnKitchenClicked.invoke(kitchen.id)
         }
+        holder.categories.removeAllViews()
+        kitchen.category.forEach {
+            val tagView = TagView(context)
+            tagView.text = it
+            holder.categories.addView(tagView)
+        }
 
         Glide.with(context).load(kitchen.logo).apply(RequestOptions().circleCrop()).into(holder.logo)
     }
@@ -151,6 +172,7 @@ class KitchenAdapter(
         val capacity = itemView.capacityTextView
         val rate = itemView.rate
         val logo = itemView.imageView
+        val categories: ViewGroup = itemView.categories
 
     }
 

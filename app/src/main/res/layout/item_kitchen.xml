@@ -40,37 +40,10 @@
                 tools:text="AL BAIK" />
 
             <GridLayout
+                android:id="@+id/categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="3">
-
-                <io.kitchen.easy.easykitchen.kitchen.TagView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginTop="3dp"
-                    android:text="hello1" />
-
-                <io.kitchen.easy.easykitchen.kitchen.TagView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginTop="3dp"
-                    android:text="hello2" />
-
-                <io.kitchen.easy.easykitchen.kitchen.TagView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginTop="3dp"
-                    android:text="hello3" />
-
-                <io.kitchen.easy.easykitchen.kitchen.TagView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginTop="3dp"
-                    android:text="hello4" />
             </GridLayout>
 
             <TextView

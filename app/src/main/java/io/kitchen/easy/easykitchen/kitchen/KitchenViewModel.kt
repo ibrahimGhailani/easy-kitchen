@@ -7,11 +7,13 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import io.kitchen.easy.easykitchen.detail.KitchenDetailViewModel.Companion.FIELD_NAME
 
 class KitchenViewModel : ViewModel() {
     val kitchens = MutableLiveData<List<Kitchen>>()
     private val allKitchens = mutableListOf<Kitchen>()
     val loading = MutableLiveData<Boolean>()
+    val selectedCategory = mutableListOf<String>()
     private val db: FirebaseFirestore by lazy {
         FirebaseFirestore.getInstance()
     }
@@ -31,6 +33,7 @@ class KitchenViewModel : ViewModel() {
                 val min = it.getLong(FIELD_MIN_CAPACITY) ?: 0
                 val logo = it.getString(FIELD_LOGO) ?: ""
                 val location = it.getGeoPoint(FIELD_LOCATION)
+                val categories = it.get(FIELD_CATEGORY) as List<String>
 
                 Log.d(TAG, "$name $max $min $logo")
                 kitchens.add(Kitchen(
@@ -39,7 +42,8 @@ class KitchenViewModel : ViewModel() {
                         maxCapacity = max,
                         minCapacity = min,
                         location = Location(location?.latitude ?: 0.0, location?.longitude ?: 0.0),
-                        logo = logo
+                        logo = logo,
+                        category = categories
                 ))
             }
             allKitchens.addAll(kitchens)
@@ -52,11 +56,12 @@ class KitchenViewModel : ViewModel() {
     fun filter(
             name: String = "",
             minCapacity: Int = 0,
-            maxCapacity: Int = 0
+            maxCapacity: Int = 0,
+            categories: List<String> = listOf()
     ) {
         this.kitchens.value =
                 when {
-                    name.isNotEmpty() && minCapacity != maxCapacity -> {
+                    name.isNotEmpty() && minCapacity != maxCapacity && categories.isNotEmpty() -> {
                         allKitchens.filter {
                             it.name.contains(name, true) && if (maxCapacity != 0) {
                                 it.maxCapacity <= maxCapacity && it.minCapacity >= minCapacity
@@ -64,6 +69,8 @@ class KitchenViewModel : ViewModel() {
                             } else {
                                 it.minCapacity >= minCapacity
                             }
+
+                            it.category.containsAll(categories)
                         }
                     }
                     name.isNotEmpty() -> allKitchens.filter {
@@ -77,9 +84,19 @@ class KitchenViewModel : ViewModel() {
                             it.minCapacity >= minCapacity
                         }
                     }
+                    categories.isNotEmpty() -> {
+                        allKitchens.filter {
+                            it.category.containsAll(categories)
+                        }
+                    }
                     else -> allKitchens
                 }
+    }
 
+    fun filterCategory(selected: Boolean, title: String) {
+        if (selected) selectedCategory.add(title)
+        else selectedCategory.remove(title)
+        filter(categories = selectedCategory)
     }
 
 
@@ -92,5 +109,6 @@ class KitchenViewModel : ViewModel() {
         const val FIELD_MIN_CAPACITY = "minCapacity"
         const val FIELD_LOGO = "image"
         const val FIELD_LOCATION = "location"
+        const val FIELD_CATEGORY = "category"
     }
 }
