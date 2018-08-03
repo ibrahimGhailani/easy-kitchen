@@ -19,7 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".detail.KitchenDetailActivity" />
-        <activity android:name="io.kitchen.easy.easykitchen.order.OrderFormActivity"></activity>
+        <activity android:name=".order.OrderFormActivity" />
+        <activity
+            android:name=".order.OrderListActivity"
+            android:label="@string/title_activity_order_list"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

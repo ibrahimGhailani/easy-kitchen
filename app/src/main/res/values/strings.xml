@@ -25,4 +25,5 @@
         <item>Muzdalifah</item>
         <item>Arafat</item>
     </string-array>
+    <string name="title_activity_order_list">OrderListActivity</string>
 </resources>

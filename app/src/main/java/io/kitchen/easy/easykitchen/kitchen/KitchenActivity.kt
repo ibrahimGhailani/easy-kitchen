@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.FirebaseApp
 import io.kitchen.easy.easykitchen.R
 import io.kitchen.easy.easykitchen.detail.KitchenDetailActivity
+import io.kitchen.easy.easykitchen.order.OrderListActivity
 import io.kitchen.easy.easykitchen.order.getOrders
 import io.kitchen.easy.easykitchen.order.hasPreviousOrders
 import kotlinx.android.synthetic.main.activity_kitchen.*
@@ -95,6 +96,11 @@ class KitchenActivity : AppCompatActivity() {
                 return false
             }
         })
+
+        ordersFab.setOnClickListener {
+            val intent = Intent(this,OrderListActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
