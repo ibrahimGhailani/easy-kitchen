@@ -7,4 +7,22 @@
     <string name="item5">Rice</string>
     <string name="item6">Pizza</string>
     <string name="search_kitchen">Search kitchen</string>
+    <string name="number">hajj company number</string>
+    <string name="quantity">quantity</string>
+    <string name="order">Order</string>
+
+    <string-array name="days">
+        <item>day one</item>
+        <item>day two</item>
+        <item>day three</item>
+        <item>day for</item>
+        <item>day five</item>
+        <item>day six</item>
+    </string-array>
+
+    <string-array name="areas">
+        <item>Mona</item>
+        <item>Muzdalifah</item>
+        <item>Arafat</item>
+    </string-array>
 </resources>
